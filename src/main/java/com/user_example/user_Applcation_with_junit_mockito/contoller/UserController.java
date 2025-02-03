@@ -1,9 +1,13 @@
 package com.user_example.user_Applcation_with_junit_mockito.contoller;
 
 
+import com.user_example.user_Applcation_with_junit_mockito.dto.PageUserDto;
 import com.user_example.user_Applcation_with_junit_mockito.model.UserModel;
+import com.user_example.user_Applcation_with_junit_mockito.repo.UserRepository;
 import com.user_example.user_Applcation_with_junit_mockito.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +16,15 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/usermodel")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     @PostMapping("/createuser")
@@ -31,19 +39,19 @@ public class UserController {
         return new ResponseEntity<>(userService.createListUserInfo(userModel),HttpStatus.CREATED) ;
     }
 
-     @GetMapping("/get/{id}")
+     @GetMapping("/{id}")
     public ResponseEntity<UserModel> getUserInfo(@PathVariable Long id){
 
         return new ResponseEntity<>(userService.getUserInfo(id),HttpStatus.OK);
     }
 
-    @GetMapping("/get/list")
+    @GetMapping("/userlist")
     public ResponseEntity<List<UserModel>> getListUserInfo(){
 
         return new ResponseEntity<>(userService.getListUserInfo(),HttpStatus.OK);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<UserModel> updateUser(@PathVariable Long id, @RequestBody UserModel userModel) {
         UserModel updatedUser = userService.updateUser(id, userModel);
 
@@ -54,7 +62,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         boolean isDeleted = userService.deleteUser(id);
 
@@ -65,5 +73,12 @@ public class UserController {
         }
     }
 
+    @PostMapping("/page")
+    public Page<UserModel> getAllUserUsingPagination(@RequestBody PageUserDto dto){
 
+        Pageable pageable =new PageUserDto().getPageable(dto);
+        Page<UserModel> userModelPage = userRepository.findAll(pageable);
+        return userModelPage;
+
+    }
 }

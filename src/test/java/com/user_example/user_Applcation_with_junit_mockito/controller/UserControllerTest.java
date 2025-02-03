@@ -153,7 +153,7 @@ public class UserControllerTest {
 
 //        when(userService.createUserInfo(inputUser)).thenReturn(inputUser);
 
-        mockMvc.perform(post("/usermodel/createuser")
+        mockMvc.perform(post("/user/createuser")
                         .content(objectMapper.writeValueAsString(inputUser))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -162,8 +162,6 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.password").value(123645L))
                 .andExpect(jsonPath("$.email").value("john.deo@gmail.com"))
         ;
-
-
 
     }
 
@@ -195,27 +193,26 @@ public class UserControllerTest {
 
 //        when(userService.createListUserInfo(anyList())).thenReturn(createList);
 
-        mockMvc.perform(post("/usermodel/createlistusers")
+        mockMvc.perform(post("/user/createlistusers")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content((objectMapper).writeValueAsString(createList)))
                 .andExpect(status().isCreated());
 
-
     }
 
     @Test
-    public void getUserInfoTest() throws Exception{
+    public void getUserInfoTest() throws Exception {
 
-        mockMvc.perform(get("/usermodel/get/{id}",1L))
+        mockMvc.perform(get("/user/{id}",1L))
 //                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
     }
 
     @Test
-    public void getListUserInfoTest() throws Exception{
+    public void getListUserInfoTest() throws Exception {
 
-        mockMvc.perform(get("/usermodel/get/list")
+        mockMvc.perform(get("/user/list")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
@@ -233,7 +230,7 @@ public class UserControllerTest {
 
 //        when(userService.updateUser(userId, updateUser)).thenReturn(updateUser);
 
-        mockMvc.perform(put("/usermodel/update/{id}", 1L)
+        mockMvc.perform(put("/user/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content((new ObjectMapper()).writeValueAsString(updateUser)))
                 .andExpect(status().isOk())
@@ -253,7 +250,7 @@ public class UserControllerTest {
 
 //        when(userService.updateUser(userId, updateUser)).thenReturn(null);
 
-        mockMvc.perform(put("/usermodel/update/{id}",5L)
+        mockMvc.perform(put("/user/{id}",5L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateUser)))
                 .andExpect(status().isNotFound());
@@ -264,10 +261,9 @@ public class UserControllerTest {
     @Test
     public void deleteUserNoContentTest() throws Exception{
 
-
 //        when(userService.deleteUser(userId)).thenReturn(true);
 
-        mockMvc.perform(delete("/usermodel/delete/{id}",2L)
+        mockMvc.perform(delete("/user/{id}",2L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
@@ -276,11 +272,10 @@ public class UserControllerTest {
     @Test
     public void deleteUserNotFound() throws Exception{
 
-        Long userId =6L;
 
 //        when(userService.deleteUser(userId)).thenReturn(false);
 
-        mockMvc.perform(delete("/usermodel/delete/{id}",6L)
+        mockMvc.perform(delete("/user/{id}",6L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }

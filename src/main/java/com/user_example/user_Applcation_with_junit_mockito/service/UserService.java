@@ -1,8 +1,10 @@
 package com.user_example.user_Applcation_with_junit_mockito.service;
 
+import com.user_example.user_Applcation_with_junit_mockito.dto.PageUserDto;
 import com.user_example.user_Applcation_with_junit_mockito.repo.UserRepository;
 import com.user_example.user_Applcation_with_junit_mockito.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,6 +67,8 @@ public class UserService {
                 return false;
             }
         }
+
+
 }
 
 
